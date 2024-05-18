@@ -12,14 +12,25 @@ use App\Models\CarpetCleaningService;
 use App\Models\CarCleaningService;
 use App\Models\KercherService;
 
+use App\Http\Resources\Listing\ListResource;
+use App\Http\Resources\Listing\ShowResource;
+
 class ListingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function list(Request $request) {
+        $perPage = $request->query('per_page', 10);
+        $users = Listing::paginate($perPage);
+
+        return ListResource::collection($users);
+    }
+
+    public function show(Listing $listing)
     {
-        //
+        $listing->load('service');
+        return new ShowResource($listing);
     }
 
     /**
@@ -113,34 +124,16 @@ class ListingController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Listing $listing)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Listing $listing)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Listing $listing)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Listing $listing)
     {
-        //
+        $listing->delete();
+
+        return response()->json([
+            'data' => [
+                'message' => 'Zahtjev uspješno obrisan!'
+            ]
+        ]);
     }
 }
