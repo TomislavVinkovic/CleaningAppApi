@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('address');
             $table->string('city');
             $table->string('postal_code', 5);
+
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             
             $table->timestamps();
         });
