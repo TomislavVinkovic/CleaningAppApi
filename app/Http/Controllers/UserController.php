@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\User\DetailsResource;
-use App\Http\Resources\User\ShowResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+
+use App\Http\Resources\User\DetailsResource;
+use App\Http\Resources\User\ListResource;
+use App\Http\Resources\User\ShowResource;
 
 class UserController extends Controller
 {
@@ -20,6 +22,13 @@ class UserController extends Controller
     public function show(User $user)
     {
         return new ShowResource($user);
+    }
+
+    public function list(Request $request) {
+        $perPage = $request->query('per_page', 10);
+        $users = User::paginate($perPage);
+
+        return ListResource::collection($users);
     }
 
     /**
