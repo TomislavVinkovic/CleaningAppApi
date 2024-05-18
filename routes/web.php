@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ListingController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -22,7 +23,9 @@ Route::get('/', function () {
 });
 
 Route::post('login', [AuthController::class, 'login']);
+
 Route::post('company', [CompanyController::class, 'store']);
+Route::post('listing/create', [ListingController::class, 'store']);
 
 Route::group([
     'middleware' => [

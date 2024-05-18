@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'tvinkovi@mathos.hr',
             'first_name' => 'Tomislav',
             'last_name' => 'Vinković',
-            'phone_number' => '+385953935731',
             'email_verified_at' => now(),
             'password' => Hash::make('Testko123!'),
             'remember_token' => Str::random(10),

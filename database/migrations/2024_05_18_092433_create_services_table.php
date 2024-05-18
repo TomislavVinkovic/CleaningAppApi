@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('type');
             // If the service is a rental service
             // How long is the rental?
-            $table->string('duration_days');
+            $table->unsignedBigInteger('duration_days')->nullable();
             $table->timestamps();
         });
     }
