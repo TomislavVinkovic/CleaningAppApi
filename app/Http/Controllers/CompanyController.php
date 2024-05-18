@@ -63,7 +63,7 @@ class CompanyController extends Controller
             // Return an error response
             return response()->json(
                 [
-                    'message' => 'Došlo je do greške prilikom slanja zahtjeva! Pokušajte ponovno.'
+                    'error' => 'Došlo je do greške prilikom slanja zahtjeva! Pokušajte ponovno kasnije ili kontaktirajte korisničku službu!'
                 ], 
                 500
             );
@@ -73,10 +73,12 @@ class CompanyController extends Controller
         // Return a response or redirect
         return response()->json(
             [
-                'message' => '
+                'data' => [
+                    'message' => '
                     Zahtjev uspješno poslan! Nakon naše provjere, 
                     dobit ćete obavijest i podatke za prijavu na Vašu e-mail adresu!
                 '
+                ]
             ], 
             201
         );
