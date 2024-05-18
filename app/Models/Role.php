@@ -29,10 +29,10 @@ class Role extends SpatieRole
      * All available user permissions
      */
     public const ADMIN = 'admin';
-    public const COMPANY = 'company';
+    public const USER = 'user';
 
     public static $roles = [
         self::ADMIN,
-        self::COMPANY,
+        self::USER,
     ];
 }
