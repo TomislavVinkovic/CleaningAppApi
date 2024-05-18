@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -21,6 +22,7 @@ Route::get('/', function () {
 });
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('company', [CompanyController::class, 'store']);
 
 Route::group([
     'middleware' => [

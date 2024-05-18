@@ -24,9 +24,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'first_name', 'last_name', 'email', 'name', 'password'
     ];
 
     /**
@@ -35,7 +33,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
@@ -53,5 +50,11 @@ class User extends Authenticatable
         return Attribute::make(
             get: fn($value, $attributes) => $this->image_id ? (env('APP_URL') . '/' . $this->image->file_path) : (null),
         );
-    } 
+    }
+
+    // relationships
+    public function company()
+    {
+        return $this->hasOne(Company::class);
+    }
 }
