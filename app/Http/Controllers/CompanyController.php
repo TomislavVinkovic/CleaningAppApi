@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
@@ -36,6 +37,7 @@ class CompanyController extends Controller
                 'name' => $request->email,
                 'password' => Hash::make(Str::random(16)), // Create a random password
             ]);
+            $user->assignRole(Role::USER);
     
             // Create a new company associated with the user
             $company = Company::create([
