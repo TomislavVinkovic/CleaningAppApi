@@ -35,8 +35,15 @@ Route::group([
     Route::group([
         'prefix' => 'user'
     ], function() {
-        Route::get('/list', [UserController::class, 'list']);
-        Route::get('/details', [UserController::class, 'details']);
+        Route::get('list', [UserController::class, 'list']);
+        Route::get('details', [UserController::class, 'details']);
+        
+        Route::post('{user}/verify', [UserController::class, 'verify']);
+        Route::post('{user}/deactivate', [UserController::class, 'deactivate']);
+        Route::post('{user}/reset-password', [UserController::class, 'resetPassword']);
+        Route::get('{user}', [UserController::class, 'show']);
+        
+        
     });
 
 });

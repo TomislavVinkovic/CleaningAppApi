@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\User;
 
+use App\Http\Resources\Company\DetailsResource as CompanyDetailsResource;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,7 +25,8 @@ class DetailsResource extends JsonResource
             'lastName' => $this->last_name,
             'imageUrl' => $this->imageUrl,
 
-            'roles' => $this->getRoleNames()
+            'roles' => $this->getRoleNames(),
+            'company' => new CompanyDetailsResource($this->whenLoaded('company'))
         ];
     }
 }

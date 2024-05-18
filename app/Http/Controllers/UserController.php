@@ -9,18 +9,22 @@ use App\Models\User;
 use App\Http\Resources\User\DetailsResource;
 use App\Http\Resources\User\ListResource;
 use App\Http\Resources\User\ShowResource;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
 
     // meant for the currently logged in user
     public function details() {
-        return new DetailsResource(Auth::user());
+        $user = User::find(Auth::id())->load('company', 'roles');
+        return new DetailsResource($user);
     }
 
     // meant for public display
     public function show(User $user)
     {
+        $user->load('company', 'roles');
         return new ShowResource($user);
     }
 
@@ -31,12 +35,44 @@ class UserController extends Controller
         return ListResource::collection($users);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function verify(User $user) {
+        $user->email_verified_at = now();
+        $user->save();
+
+        return response()->json([
+            'data' => [
+                'message' => 'Korisnik uspješno verificiran!'
+            ]
+        ]);
+    }
+
+    public function deactivate(User $user) {
+        $user->email_verified_at = null;
+        $user->save();
+
+        return response()->json([
+            'data' => [
+                'message' => 'Korisnik uspješno deaktiviran!'
+            ]
+        ]);
+    }
+
+    public function resetPassword(User $user) {
+        if($user->email_verified_at === null) {
+            return response()->json([
+                'error' => 'Korisnik nije verificiran!'
+            ], 400);
+        }
+        // TODO: send email with new password
+        // TODO: see security considerations
+        $user->password = Hash::make(Str::random(16));
+        $user->save();
+
+        return response()->json([
+            'data' => [
+                'message' => 'Lozinka uspješno resetirana!'
+            ]
+        ]);
     }
 
     /**
