@@ -45,6 +45,7 @@ class UserController extends Controller
 
         $password = Str::random(16);
         $user->password = Hash::make($password);
+        $user->save();
         Mail::to($user->email)->send(new AccountVerifiedMail($password));
 
         return response()->json([
