@@ -29,8 +29,7 @@ class JobController extends Controller
     }
 
     public function markAsComplete(Job $job) {
-        $job->is_completed = true;
-        $job->save();
+        $job->update(['is_completed' => true]);
 
         return [
             'data' => [

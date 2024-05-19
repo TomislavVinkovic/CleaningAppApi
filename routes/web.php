@@ -73,7 +73,7 @@ Route::group([
         'prefix' => 'job'
     ], function() {
         Route::get('', [JobController::class, 'list']);
-        Route::post('mark-as-complete', [JobController::class, 'markAsComplete']);
+        Route::post('{job}/mark-as-complete', [JobController::class, 'markAsComplete']);
         Route::get('{offer}', [JobController::class, 'show']);
         Route::post('{offer}', [JobController::class, 'markAsComplete']);
     });

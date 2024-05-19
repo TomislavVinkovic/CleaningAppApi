@@ -19,7 +19,7 @@ class ShowResource extends JsonResource
             'id' => $this->id,
             'listing' => new ListingShowResource($this->whenLoaded('listing')),
             'price' => $this->price,
-            'is_completed' => $this->isCompleted
+            'is_completed' => $this->is_completed
         ];
     }
 }
