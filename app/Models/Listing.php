@@ -30,6 +30,10 @@ class Listing extends Model
         return $this->belongsTo(Service::class);
     }
 
+    public function job() {
+        return $this->hasOne(Job::class);
+    }
+
     public function offers() {
         return $this->hasMany(Offer::class);
     }

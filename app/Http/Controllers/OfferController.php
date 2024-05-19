@@ -78,8 +78,12 @@ class OfferController extends Controller
     {
         if ($request->hasValidSignature()) {
             // Mark the offer as accepted
+            $offer->load(['listing', 'listing.job', 'user', 'user.company']);
+            if($offer->listing->job) {
+                return response('Oglas već ima dodijeljenog davatelja usluge');
+            }
             $offer->update(['status' => 'accepted']);
-            $offer->load(['listing', 'user', 'user.company']);
+            
             Mail::to($offer->user->email)->send(new ListingOfferAcceptedMail($offer));
 
             // Create a new job
@@ -100,7 +104,7 @@ class OfferController extends Controller
             return view('offer_accepted', ['offer' => $offer]);
         }
 
-        return response()->json(['message' => 'Invalid or expired link.'], 401);
+        return response('Poveznica je nevaljana ili je istekla.');
     }
 
     /**
