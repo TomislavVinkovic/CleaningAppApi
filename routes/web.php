@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminListingController;
 use App\Http\Controllers\AdminOfferController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\OfferController;
 use Illuminate\Support\Facades\Route;
@@ -67,6 +68,16 @@ Route::group([
         Route::get('{offer}', [OfferController::class, 'show']);
     });
 
+    //jobs
+    Route::group([
+        'prefix' => 'job'
+    ], function() {
+        Route::get('', [JobController::class, 'list']);
+        Route::post('mark-as-complete', [JobController::class, 'markAsComplete']);
+        Route::get('{offer}', [JobController::class, 'show']);
+        Route::post('{offer}', [JobController::class, 'markAsComplete']);
+    });
+
     Route::group([
         'prefix' => 'admin'
     ], function() {
@@ -76,7 +87,6 @@ Route::group([
             'prefix' => 'user'
         ], function() {
             Route::get('list', [UserController::class, 'list']);
-            
             
             Route::post('{user}/verify', [UserController::class, 'verify']);
             Route::post('{user}/deactivate', [UserController::class, 'deactivate']);

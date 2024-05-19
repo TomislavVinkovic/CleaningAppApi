@@ -4,31 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Illuminate\Http\Request;
+use App\Http\Resources\Job\ListResource;
+use App\Http\Resources\Job\ShowResource;
 
 class JobController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function list(Request $request)
     {
-        //
-    }
+        $perPage = $request->query('per_page', 10);
+        $listings = Job::where('user_id', auth()->id())
+            ->with(['listing'])
+            ->paginate($perPage);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return ListResource::collection($listings);
     }
 
     /**
@@ -36,30 +24,18 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        //
+        $job->load(['listing']);
+        return new ShowResource($job);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Job $job)
-    {
-        //
-    }
+    public function markAsComplete(Job $job) {
+        $job->is_completed = true;
+        $job->save();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Job $job)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Job $job)
-    {
-        //
+        return [
+            'data' => [
+                'message' => 'Posao uspješno obavljen'
+            ]
+        ];
     }
 }
