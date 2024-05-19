@@ -24,9 +24,9 @@ class ListingController extends Controller
      */
     public function list(Request $request) {
         $perPage = $request->query('per_page', 10);
-        $users = Listing::paginate($perPage);
+        $listings = Listing::paginate($perPage);
 
-        return ListResource::collection($users);
+        return ListResource::collection($listings);
     }
 
     public function show(Listing $listing)
