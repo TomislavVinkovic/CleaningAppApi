@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminListingController;
+use App\Http\Controllers\AdminOfferController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ListingController;
@@ -90,6 +91,15 @@ Route::group([
             Route::get('{listing}', [AdminListingController::class, 'show']);
             Route::delete('{listing}', [AdminListingController::class, 'destroy']);
         });
+
+        //offer
+    Route::group([
+        'prefix' => 'offer'
+    ], function() {
+        Route::get('', [AdminOfferController::class, 'list']);
+        Route::delete('', [AdminOfferController::class, 'destroy']);
+        Route::get('{offer}', [AdminOfferController::class, 'show']);
+    });
 
     });
 

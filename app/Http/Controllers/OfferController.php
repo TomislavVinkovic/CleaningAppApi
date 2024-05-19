@@ -111,18 +111,4 @@ class OfferController extends Controller
 
         return response('Poveznica je nevaljana ili je istekla.');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Offer $offer)
-    {
-        $offer->delete();
-
-        return response()->json([
-            'data' => [
-                'message' => 'Ponuda uspješno obrisana!'
-            ]
-        ]);
-    }
 }
