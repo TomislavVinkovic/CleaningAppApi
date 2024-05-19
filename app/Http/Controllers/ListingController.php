@@ -15,17 +15,16 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Http\Resources\Listing\ListResource;
 use App\Http\Resources\Listing\ShowResource;
+
+
 use App\Mail\ListingConfirmedMail;
-use Illuminate\Support\Facades\Log;
 
 class ListingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function list(Request $request) {
         $perPage = $request->query('per_page', 10);
-        $listings = Listing::paginate($perPage);
+        $listings = Listing::whereNoOffersFromCurrentUser()
+            ->paginate($perPage);
 
         return ListResource::collection($listings);
     }
@@ -52,9 +51,6 @@ class ListingController extends Controller
         return new ShowResource($listing);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CreateRequest $request)
     {
         $service = null;
@@ -142,19 +138,5 @@ class ListingController extends Controller
             ], 500);
         }
         
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Listing $listing)
-    {
-        $listing->delete();
-
-        return response()->json([
-            'data' => [
-                'message' => 'Zahtjev uspješno obrisan!'
-            ]
-        ]);
     }
 }

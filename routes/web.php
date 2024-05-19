@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminListingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\OfferController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -27,18 +29,41 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('company', [CompanyController::class, 'store']);
 Route::post('listing', [ListingController::class, 'store']);
 
+// accept offer via email
+Route::get('/accept-offer/{offer}', [OfferController::class, 'acceptOffer'])
+    ->name('offer.accept')
+    ->middleware('signed');
+
 Route::group([
     'middleware' => [
         'auth:sanctum'
     ],
 ], function() {
+    // user
     Route::group([
         'prefix' => 'user'
     ], function() {
         Route::get('details', [UserController::class, 'details']);
     });
     
+    // logout
     Route::post('logout', [AuthController::class, 'logout']);
+
+    // listing
+    Route::group([
+        'prefix' => 'listing'
+    ], function() {
+        Route::get('', [ListingController::class, 'list']);
+        Route::get('{listing}', [ListingController::class, 'show']);
+    });
+
+    Route::group([
+        'prefix' => 'offer'
+    ], function() {
+        Route::get('', [OfferController::class, 'list']);
+        Route::post('', [OfferController::class, 'store']);
+        Route::get('{listing}', [OfferController::class, 'show']);
+    });
 
     Route::group([
         'prefix' => 'admin'
@@ -60,9 +85,9 @@ Route::group([
         Route::group([
             'prefix' => 'listing'
         ], function() {
-            Route::get('', [ListingController::class, 'list']);
-            Route::get('{listing}', [ListingController::class, 'show']);
-            Route::delete('{listing}', [ListingController::class, 'destroy']);
+            Route::get('', [AdminListingController::class, 'list']);
+            Route::get('{listing}', [AdminListingController::class, 'show']);
+            Route::delete('{listing}', [AdminListingController::class, 'destroy']);
         });
 
     });

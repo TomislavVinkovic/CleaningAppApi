@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Company\CreateRequest;
+use App\Http\Requests\Offer\CreateRequest;
 use App\Http\Resources\Listing\ShowResource;
 use App\Mail\ListingOfferReceivedMail;
 use App\Models\Offer;
@@ -42,20 +42,20 @@ class OfferController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $validated = $request->validated;
 
         $offer = null;
-        $listing = Listing::find($validated->listing_id);
+        $listing = Listing::find($request->listing_id);
         
         try {
             $offer = Offer::create([
-                'price' => $validated->price,
+                'price' => $request->price,
                 'status' => 'pending',
-                'listing_id' => $validated->listing_id,
+                'listing_id' => $request->listing_id,
                 'user_id' => auth()->id()
             ]);
+            $offer->load(['user', 'user.company']);
 
-            Mail::to($validated['email'])->send(new ListingOfferReceivedMail($listing, $offer));
+            Mail::to($listing->email)->send(new ListingOfferReceivedMail($listing, $offer));
 
             return response()->json([
                 'data' => [
@@ -79,14 +79,14 @@ class OfferController extends Controller
         if ($request->hasValidSignature()) {
             // Mark the offer as accepted
             $offer->update(['status' => 'accepted']);
-            $offer->load(['listing', 'listing.user', 'listing.user.company']);
+            $offer->load(['listing', 'user', 'user.company']);
             Mail::to($offer->user->email)->send(new ListingOfferAcceptedMail($offer));
 
             // Create a new job
             Job::create([
                 'listing_id' => $offer->listing->id,
                 'user_id' => $offer->user_id,
-                'price' => $offer->listing->offer->price,
+                'price' => $offer->price,
             ]);
 
             // Reject all other offers

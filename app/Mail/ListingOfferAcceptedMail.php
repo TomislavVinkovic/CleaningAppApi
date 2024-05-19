@@ -30,7 +30,7 @@ class ListingOfferAcceptedMail extends Mailable
     {
         $this->offer = $offer;
         $this->listing = $offer->listing;
-        $this->user = $this->listing->user;
+        $this->user = $this->offer->user;
         $this->company = $this->user->company;
     }
 

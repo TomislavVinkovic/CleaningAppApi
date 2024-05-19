@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Listing extends Model
 {
@@ -15,6 +16,14 @@ class Listing extends Model
         'address', 'city', 'postal_code',
         'type', 'service_id'
     ];
+
+    // Scopes
+    public function scopeWhereNoOffersFromCurrentUser(Builder $query)
+    {
+        return $query->whereDoesntHave('offers', function ($q) {
+            $q->where('user_id', auth()->id());
+        });
+    }
 
     public function service()
     {

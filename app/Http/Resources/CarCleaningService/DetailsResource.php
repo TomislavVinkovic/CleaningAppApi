@@ -16,7 +16,6 @@ class DetailsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        Log::info('Car resource');
         return [
             'id' => $this->id,
             'car_type' => $this->car_type,

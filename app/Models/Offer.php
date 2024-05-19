@@ -21,6 +21,6 @@ class Offer extends Model
     }
     public function user()
     {
-        return $this->belongsTo(Listing::class);
+        return $this->belongsTo(User::class);
     }
 }

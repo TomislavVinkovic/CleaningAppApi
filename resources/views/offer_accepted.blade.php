@@ -33,22 +33,20 @@
             <div class="card-body text-center">
                 <h4 class="card-title">Čestitamo!</h4>
                 <p class="card-text">Vaša ponuda za listing <strong>{{ $offer->listing->title }}</strong> je uspješno prihvaćena.</p>
-                <p class="card-text">Cijena ponude: <strong>{{ $offer->listing->price }} HRK</strong></p>
+                <p class="card-text">Cijena ponude: <strong>{{ $offer->price }} EUR</strong></p>
 
                 <div class="mt-4">
                     <h5>Podaci o korisniku:</h5>
-                    <p>Ime: {{ $offer->listing->user->name }}</p>
-                    <p>Email: {{ $offer->listing->user->email }}</p>
+                    <p>Ime: {{ $offer->user->name }}</p>
+                    <p>Email: {{ $offer->user->email }}</p>
                 </div>
 
                 <div class="mt-4">
                     <h5>Podaci o kompaniji:</h5>
-                    <p>Naziv kompanije: {{ $offer->listing->user->company->name }}</p>
-                    <p>Adresa: {{ $offer->listing->user->company->address }}</p>
-                    <p>Telefon: {{ $offer->listing->user->company->phone }}</p>
+                    <p>Naziv kompanije: {{ $offer->user->company->name }}</p>
+                    <p>Adresa: {{ $offer->user->company->address }}</p>
+                    <p>Telefon: {{ $offer->user->company->phone }}</p>
                 </div>
-                
-                <a href="{{ url('/') }}" class="btn btn-primary mt-4">Povratak na početnu stranicu</a>
             </div>
         </div>
     </div>

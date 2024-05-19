@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Listing;
 use App\Models\Offer;
@@ -31,8 +32,8 @@ class ListingOfferReceivedMail extends Mailable
     {
         $this->listing = $listing;
         $this->offer = $offer;
-        $this->user = $listing->user;
-        $this->company = $listing->user->company;
+        $this->user = $offer->user;
+        $this->company = $offer->user->company;
     }
 
     /**
@@ -56,7 +57,6 @@ class ListingOfferReceivedMail extends Mailable
             with: [
                 'listing' => $this->listing,
                 'offer' => $this->offer,
-                'user' => $this->user,
                 'company' => $this->company,
                 'signedUrl' => $signedUrl,
             ],
