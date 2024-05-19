@@ -15,6 +15,8 @@ use App\Models\KercherService;
 use App\Http\Resources\Listing\ListResource;
 use App\Http\Resources\Listing\ShowResource;
 
+use Illuminate\Support\Facades\Log;
+
 class ListingController extends Controller
 {
     /**
@@ -30,6 +32,22 @@ class ListingController extends Controller
     public function show(Listing $listing)
     {
         $listing->load('service');
+        // depending on the type of the service, load different relationship model
+        switch($listing->service->type) {
+            case 'kercher':
+                $listing->load('service.kercherService');
+                break;
+            case 'sofa':
+                $listing->load('service.sofaCleaningService');
+                break;
+            case 'car':
+                $listing->load('service.carCleaningService');
+                break;
+            case 'carpet':
+                $listing->load('service.carpetCleaningService');
+                break;
+        }
+
         return new ShowResource($listing);
     }
 
