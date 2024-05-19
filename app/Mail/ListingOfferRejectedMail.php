@@ -50,7 +50,7 @@ class ListingOfferRejectedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.listing_offer_rejected',
+            markdown: 'mail.listing_offer_rejected',
             with: [
                 'offer' => $this->offer,
                 'listing' => $this->listing,

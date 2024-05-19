@@ -37,7 +37,7 @@ class AccountDeactivatedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.account_deactivated',
+            markdown: 'mail.account_deactivated',
         );
     }
 

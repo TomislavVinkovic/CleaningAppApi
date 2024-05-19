@@ -37,7 +37,7 @@ class AccountVerifiedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.account_verified',
+            markdown: 'mail.account_verified',
             with: [
                 'password' => $this->password
             ]

@@ -40,7 +40,7 @@ class ListingConfirmedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.listing_confirmed',
+            markdown: 'mail.listing_confirmed',
             with: [
                 'listing' => $this->listing
             ]

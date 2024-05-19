@@ -52,7 +52,7 @@ class ListingOfferReceivedMail extends Mailable
     {
         $signedUrl = URL::signedRoute('offer.accept', ['offer' => $this->offer->id]);
         return new Content(
-            view: 'mail.listing_offer_received',
+            markdown: 'mail.listing_offer_received',
             with: [
                 'listing' => $this->listing,
                 'offer' => $this->offer,
