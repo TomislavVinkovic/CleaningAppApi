@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Company\CreateRequest;
 use App\Http\Resources\Listing\ShowResource;
+use App\Mail\ListingOfferReceivedMail;
 use App\Models\Offer;
 use Illuminate\Http\Request;
 use App\Http\Resources\Offer\ListResource;
+use App\Mail\ListingOfferAcceptedMail;
+use App\Mail\ListingOfferRejectedMail;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Listing;
 
 class OfferController extends Controller
 {
@@ -35,8 +40,11 @@ class OfferController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $offer = null;
         $validated = $request->validated;
+
+        $offer = null;
+        $listing = Listing::find($validated->listing_id);
+        
         try {
             $offer = Offer::create([
                 'price' => $validated->price,
@@ -44,6 +52,8 @@ class OfferController extends Controller
                 'listing_id' => $validated->listing_id,
                 'user_id' => auth()->id()
             ]);
+
+            Mail::to($validated['email'])->send(new ListingOfferReceivedMail($listing, $offer));
 
             return response()->json([
                 'data' => [
@@ -67,11 +77,13 @@ class OfferController extends Controller
         if ($request->hasValidSignature()) {
             // Mark the offer as accepted
             $offer->update(['status' => 'accepted']);
+            Mail::to($offer->user->email)->send(new ListingOfferAcceptedMail($offer));
 
             // Reject all other offers
             $otherOffers = $offer->listing->offers->where('id', '!=', $offer->id);
             $otherOffers->each(function(Offer $offer) {
                 $offer->update(['status' => 'rejected']);
+                Mail::to($offer->user->email)->send(new ListingOfferRejectedMail($offer));
             });
 
             return view('offer_accepted', ['offer' => $offer]);

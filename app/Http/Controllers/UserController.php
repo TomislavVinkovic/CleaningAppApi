@@ -10,6 +10,7 @@ use App\Http\Resources\User\DetailsResource;
 use App\Http\Resources\User\ListResource;
 use App\Http\Resources\User\ShowResource;
 use App\Mail\AccountDeactivatedMail;
+use App\Mail\AccountPasswordResetMail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -77,6 +78,8 @@ class UserController extends Controller
         $password = Str::random(16);
         $user->password = Hash::make($password);
         $user->save();
+
+        Mail::to($user->email)->send(new AccountPasswordResetMail($password));
 
         return response()->json([
             'data' => [

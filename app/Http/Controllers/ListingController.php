@@ -11,10 +11,11 @@ use App\Models\SofaCleaningService;
 use App\Models\CarpetCleaningService;
 use App\Models\CarCleaningService;
 use App\Models\KercherService;
+use Illuminate\Support\Facades\Mail;
 
 use App\Http\Resources\Listing\ListResource;
 use App\Http\Resources\Listing\ShowResource;
-
+use App\Mail\ListingConfirmedMail;
 use Illuminate\Support\Facades\Log;
 
 class ListingController extends Controller
@@ -113,6 +114,8 @@ class ListingController extends Controller
                 'type' => $validated['listingType'],
                 'service_id' => $service->id,
             ]);
+
+            Mail::to($validated['email'])->send(new ListingConfirmedMail($listing));
             
             return response()->json([
                 'data' => [
