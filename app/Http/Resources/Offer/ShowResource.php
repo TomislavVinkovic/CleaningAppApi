@@ -4,6 +4,7 @@ namespace App\Http\Resources\Offer;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Listing\ShowResource as ListingShowResource;
 
 class ShowResource extends JsonResource
 {
@@ -14,6 +15,11 @@ class ShowResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'listing' => new ListingShowResource($this->whenLoaded('listing')),
+            'price' => $this->price,
+            'status' => $this->status
+        ];
     }
 }

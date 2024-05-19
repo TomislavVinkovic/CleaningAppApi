@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Offer\CreateRequest;
-use App\Http\Resources\Listing\ShowResource;
+use App\Http\Resources\Offer\ShowResource;
 use App\Mail\ListingOfferReceivedMail;
 use App\Models\Offer;
 use Illuminate\Http\Request;
@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Listing;
 use App\Models\Job;
 
+use Illuminate\Support\Facades\Log;
+
 class OfferController extends Controller
 {
     /**
@@ -23,7 +25,9 @@ class OfferController extends Controller
     public function list(Request $request)
     {
         $perPage = $request->query('per_page', 10);
-        $listings = Offer::paginate($perPage);
+        $listings = Offer::where('user_id', auth()->id())
+            ->with(['listing'])
+            ->paginate($perPage);
 
         return ListResource::collection($listings);
     }
@@ -33,6 +37,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
+        $offer->load(['listing']);
         return new ShowResource($offer);
     }
 

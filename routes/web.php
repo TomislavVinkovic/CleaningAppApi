@@ -57,12 +57,13 @@ Route::group([
         Route::get('{listing}', [ListingController::class, 'show']);
     });
 
+    //offer
     Route::group([
         'prefix' => 'offer'
     ], function() {
         Route::get('', [OfferController::class, 'list']);
         Route::post('', [OfferController::class, 'store']);
-        Route::get('{listing}', [OfferController::class, 'show']);
+        Route::get('{offer}', [OfferController::class, 'show']);
     });
 
     Route::group([
