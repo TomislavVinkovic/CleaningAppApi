@@ -74,8 +74,8 @@ Route::group([
     ], function() {
         Route::get('', [JobController::class, 'list']);
         Route::post('{job}/mark-as-complete', [JobController::class, 'markAsComplete']);
-        Route::get('{offer}', [JobController::class, 'show']);
-        Route::post('{offer}', [JobController::class, 'markAsComplete']);
+        Route::get('{job}', [JobController::class, 'show']);
+        Route::post('{job}', [JobController::class, 'markAsComplete']);
     });
 
     Route::group([
