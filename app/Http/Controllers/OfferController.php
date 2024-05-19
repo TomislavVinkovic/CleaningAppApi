@@ -11,7 +11,9 @@ use App\Http\Resources\Offer\ListResource;
 use App\Mail\ListingOfferAcceptedMail;
 use App\Mail\ListingOfferRejectedMail;
 use Illuminate\Support\Facades\Mail;
+
 use App\Models\Listing;
+use App\Models\Job;
 
 class OfferController extends Controller
 {
@@ -77,10 +79,19 @@ class OfferController extends Controller
         if ($request->hasValidSignature()) {
             // Mark the offer as accepted
             $offer->update(['status' => 'accepted']);
+            $offer->load(['listing', 'listing.user', 'listing.user.company']);
             Mail::to($offer->user->email)->send(new ListingOfferAcceptedMail($offer));
+
+            // Create a new job
+            Job::create([
+                'listing_id' => $offer->listing->id,
+                'user_id' => $offer->user_id,
+                'price' => $offer->listing->offer->price,
+            ]);
 
             // Reject all other offers
             $otherOffers = $offer->listing->offers->where('id', '!=', $offer->id);
+            $otherOffers->load(['listing', 'listing.user', 'listing.user.company']);
             $otherOffers->each(function(Offer $offer) {
                 $offer->update(['status' => 'rejected']);
                 Mail::to($offer->user->email)->send(new ListingOfferRejectedMail($offer));

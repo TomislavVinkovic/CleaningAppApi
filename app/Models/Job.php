@@ -12,7 +12,7 @@ class Job extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'listing_id', 'price', 'is_completed'
+        'listing_id', 'user_id', 'price', 'is_completed'
     ];
 
     public function listing() {

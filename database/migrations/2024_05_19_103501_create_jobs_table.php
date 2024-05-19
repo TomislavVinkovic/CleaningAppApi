@@ -14,12 +14,17 @@ return new class extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('listing_id');
+            $table->uuid('user_id');
             $table->double('price');
             $table->boolean('is_completed')->default(0);
 
             $table->foreign('listing_id')
                 ->references('id')
                 ->on('listings')
+                ->onDelete('cascade');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
 
             $table->timestamps();
