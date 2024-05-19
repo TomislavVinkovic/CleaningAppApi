@@ -40,7 +40,7 @@ class OfferController extends Controller
         try {
             $offer = Offer::create([
                 'price' => $validated->price,
-                'status' => $validated->status,
+                'status' => 'pending',
                 'listing_id' => $validated->listing_id,
                 'user_id' => auth()->id()
             ]);
@@ -59,6 +59,25 @@ class OfferController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    // accessed by a signed url
+    public function acceptOffer(Request $request, Offer $offer)
+    {
+        if ($request->hasValidSignature()) {
+            // Mark the offer as accepted
+            $offer->update(['status' => 'accepted']);
+
+            // Reject all other offers
+            $otherOffers = $offer->listing->offers->where('id', '!=', $offer->id);
+            $otherOffers->each(function(Offer $offer) {
+                $offer->update(['status' => 'rejected']);
+            });
+
+            return view('offer_accepted', ['offer' => $offer]);
+        }
+
+        return response()->json(['message' => 'Invalid or expired link.'], 401);
     }
 
     /**

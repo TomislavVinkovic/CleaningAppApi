@@ -24,10 +24,6 @@ class CreateRequest extends FormRequest
     {
         return [
             'price' => 'required|decimal:2',
-            'status' => [
-                'required',
-                Rule::in(['accepted', 'rejected', 'pending'])
-            ],
             'listing_id' => 'required|exists:listings,id'
         ];
     }

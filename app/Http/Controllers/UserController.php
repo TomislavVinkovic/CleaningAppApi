@@ -9,8 +9,11 @@ use App\Models\User;
 use App\Http\Resources\User\DetailsResource;
 use App\Http\Resources\User\ListResource;
 use App\Http\Resources\User\ShowResource;
+use App\Mail\AccountDeactivatedMail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\AccountVerifiedMail;
 
 class UserController extends Controller
 {
@@ -39,6 +42,10 @@ class UserController extends Controller
         $user->email_verified_at = now();
         $user->save();
 
+        $password = Str::random(16);
+        $user->password = Hash::make($password);
+        Mail::to($user->email)->send(new AccountVerifiedMail($password));
+
         return response()->json([
             'data' => [
                 'message' => 'Korisnik uspješno verificiran!'
@@ -49,6 +56,8 @@ class UserController extends Controller
     public function deactivate(User $user) {
         $user->email_verified_at = null;
         $user->save();
+
+        Mail::to($user->email)->send(new AccountDeactivatedMail());
 
         return response()->json([
             'data' => [
@@ -65,7 +74,8 @@ class UserController extends Controller
         }
         // TODO: send email with new password
         // TODO: see security considerations
-        $user->password = Hash::make(Str::random(16));
+        $password = Str::random(16);
+        $user->password = Hash::make($password);
         $user->save();
 
         return response()->json([
