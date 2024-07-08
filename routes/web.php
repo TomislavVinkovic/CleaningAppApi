@@ -79,9 +79,9 @@ Route::group([
     });
 
     Route::group([
-        'prefix' => 'admin'
+        'prefix' => 'admin',
+        'middleware' => 'role:admin'
     ], function() {
-        
 
         Route::group([
             'prefix' => 'user'

@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\Offer;
 
-use App\Http\Resources\Listing\ShowResource;
+use App\Http\Resources\Listing\ShowResource as ListingShowResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +17,7 @@ class ListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'listing' => new ShowResource($this->whenLoaded('listing')),
+            'listing' => new ListingShowResource($this->whenLoaded('listing')),
             'price' => $this->price,
             'status' => $this->status
         ];
