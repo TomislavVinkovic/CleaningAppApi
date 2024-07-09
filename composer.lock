@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53a626ad4d707baaf71c6ef6c317cb3c",
+    "content-hash": "c3a5af289f687fbee060fa1c35107c36",
     "packages": [
         {
             "name": "brick/math",
@@ -2047,6 +2047,50 @@
                 }
             ],
             "time": "2024-04-12T21:02:21+00:00"
+        },
+        {
+            "name": "motomedialab/smtp2go",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/motomedialab/laravel-smtp2go.git",
+                "reference": "841ff27113fc5a2dd635fecac19bfce3401c66af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/motomedialab/laravel-smtp2go/zipball/841ff27113fc5a2dd635fecac19bfce3401c66af",
+                "reference": "841ff27113fc5a2dd635fecac19bfce3401c66af",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.8",
+                "laravel/framework": "^9.0|^10.0|^11.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.13",
+                "orchestra/testbench": "^7.39"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Motomedialab\\Smtp2Go\\Providers\\Smtp2GoServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Motomedialab\\Smtp2Go\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Send emails via API using the first-class email courier SMTP2Go",
+            "support": {
+                "issues": "https://github.com/motomedialab/laravel-smtp2go/issues",
+                "source": "https://github.com/motomedialab/laravel-smtp2go/tree/v1.1.0"
+            },
+            "time": "2024-03-12T09:16:04+00:00"
         },
         {
             "name": "mtrajano/laravel-swagger",

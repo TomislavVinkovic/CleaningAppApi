@@ -34,6 +34,10 @@ return [
     */
 
     'mailers' => [
+        'smtp2go' => [
+            'transport' => 'smtp2go',
+            'api_key' => env('SMTP2GO_API_KEY'),
+        ],
         'smtp' => [
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
